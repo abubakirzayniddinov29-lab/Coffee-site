@@ -1,0 +1,166 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    -webkit-tap-highlight-color: transparent;
+  }
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+  .lenis.lenis-stopped {
+    overflow: hidden;
+  }
+  body {
+    @apply font-sans bg-espresso text-cream overflow-x-hidden;
+    font-feature-settings: 'ss01', 'cv11';
+  }
+  h1, h2, h3, h4 {
+    @apply font-serif;
+  }
+  ::selection {
+    @apply bg-gold text-espresso;
+  }
+  :focus-visible {
+    outline: 2px solid theme('colors.gold.DEFAULT');
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+  /* custom cursor active → hide native one on fine pointers */
+  html.has-cursor,
+  html.has-cursor * {
+    cursor: none !important;
+  }
+}
+
+@layer components {
+  .container-x {
+    @apply mx-auto w-full max-w-[1320px] px-5 sm:px-8 lg:px-12;
+  }
+  .eyebrow {
+    @apply inline-flex items-center gap-3 text-[11px] uppercase tracking-widest2 text-gold font-medium;
+  }
+  .eyebrow::before {
+    content: '';
+    @apply block h-px w-8 bg-current;
+  }
+  .h-display {
+    @apply font-serif font-medium leading-[0.92] tracking-[-0.02em];
+  }
+
+  /* ---------- Buttons with micro-interactions ---------- */
+  .btn {
+    @apply relative inline-flex items-center justify-center gap-3 overflow-hidden rounded-full px-7 py-4
+      text-sm font-medium tracking-wide transition-[transform,box-shadow,color] duration-500 ease-expo
+      active:scale-[0.96] will-change-transform select-none;
+  }
+  .btn > span {
+    @apply relative z-10 inline-flex items-center gap-3;
+  }
+  .btn::before {
+    content: '';
+    @apply absolute inset-0 z-0 rounded-full transition-transform duration-700 ease-expo;
+    transform: translateY(101%);
+  }
+  .btn:hover::before {
+    transform: translateY(0);
+  }
+  .btn-primary {
+    @apply bg-gold text-espresso shadow-[0_10px_40px_-10px_rgba(212,162,76,0.6)];
+  }
+  .btn-primary::before {
+    @apply bg-cream;
+  }
+  .btn-ghost {
+    @apply border border-cream/25 text-cream;
+  }
+  .btn-ghost::before {
+    @apply bg-cream;
+  }
+  .btn-ghost:hover {
+    @apply text-espresso;
+  }
+  .btn-dark {
+    @apply bg-espresso text-cream;
+  }
+  .btn-dark::before {
+    @apply bg-caramel;
+  }
+  .btn .arrow {
+    @apply transition-transform duration-500 ease-expo;
+  }
+  .btn:hover .arrow {
+    transform: translateX(4px) rotate(-45deg);
+  }
+
+  .link-underline {
+    @apply relative;
+  }
+  .link-underline::after {
+    content: '';
+    @apply absolute left-0 -bottom-1 h-px w-full origin-right scale-x-0 bg-current transition-transform duration-500 ease-expo;
+  }
+  .link-underline:hover::after,
+  .link-underline[aria-current='true']::after {
+    @apply origin-left scale-x-100;
+  }
+
+  .field {
+    @apply w-full rounded-2xl border border-espresso/15 bg-white/60 px-5 py-4 text-espresso placeholder:text-espresso/40
+      outline-none transition focus:border-caramel focus:bg-white focus:ring-4 focus:ring-caramel/15;
+  }
+}
+
+/* ---------- Grain overlay ---------- */
+.grain {
+  position: fixed;
+  inset: -100%;
+  width: 300%;
+  height: 300%;
+  pointer-events: none;
+  z-index: 60;
+  opacity: 0.07;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: grain 1.2s steps(6) infinite;
+}
+@keyframes grain {
+  0%, 100% { transform: translate(0, 0); }
+  20% { transform: translate(-5%, 4%); }
+  40% { transform: translate(4%, -6%); }
+  60% { transform: translate(-3%, 7%); }
+  80% { transform: translate(6%, -2%); }
+}
+
+/* ---------- Loader / CSS steam ---------- */
+@keyframes steam-rise {
+  0% { transform: translateY(8px) scaleX(1); opacity: 0; }
+  30% { opacity: 0.8; }
+  100% { transform: translateY(-26px) scaleX(1.6); opacity: 0; }
+}
+.steam-line {
+  animation: steam-rise 2.4s ease-in-out infinite;
+  transform-origin: bottom center;
+}
+
+/* Hero chars start hidden until the intro timeline runs */
+.hero-char { display: inline-block; will-change: transform; }
+.js-anim .hero-char,
+.js-anim .hero-fade { opacity: 0; }
+
+.outline-text {
+  -webkit-text-stroke: 1px currentColor;
+  color: transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .grain, .steam-line { animation: none; }
+  .js-anim .hero-char, .js-anim .hero-fade { opacity: 1; }
+  *, *::before, *::after {
+    transition-duration: 0.01ms !important;
+  }
+}

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- 🔁 SWAP LOGO -->
+  <rect width="64" height="64" rx="14" fill="#2B1B12"/>
+  <ellipse cx="32" cy="32" rx="14" ry="20" fill="#C68B59" transform="rotate(-25 32 32)"/>
+  <path d="M26 16 C 36 26, 28 38, 38 48" stroke="#2B1B12" stroke-width="3.5" fill="none" stroke-linecap="round" transform="rotate(-25 32 32)"/>
+</svg>
